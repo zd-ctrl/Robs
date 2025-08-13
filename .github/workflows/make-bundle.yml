@@ -1,0 +1,23 @@
+name: Make full repo bundle
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # IMPORTANT: get all history
+
+      - name: Create git bundle
+        run: git bundle create repo.bundle --all
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: repo-bundle
+          path: repo.bundle
+          compression-level: 0
