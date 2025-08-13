@@ -1,0 +1,87 @@
+name: Scan repo history for images & personal info
+on:
+  workflow_dispatch: {}
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y exiftool
+
+      - name: Gather all blobs and paths
+        run: |
+          # List all blobs and their paths across ALL commits
+          git rev-list --objects --all > all_objects.txt
+          # Keep only blobs with common image extensions
+          awk '{print $1, $2}' all_objects.txt | \
+            grep -E ' (.*\.(jpg|jpeg|png|gif|webp|bmp|svg))$' -i > image_blobs.txt || true
+
+      - name: Extract EXIF for every historical image blob
+        run: |
+          mkdir -p _scan/imgs
+          : > exif_report.txt
+          while read -r sha path; do
+            # Some lines may not have a path (just SHA); skip those
+            if [ -z "$path" ]; then continue; fi
+            # Write the blob to a temp file (binary-safe)
+            git cat-file -p "$sha" > "_scan/imgs/${sha}"
+            # Run exiftool (suppress huge output; focus on likely sensitive fields)
+            echo "==== $sha  $path ====" >> exif_report.txt
+            exiftool -s -s -s \
+              -GPSLatitude -GPSLongitude -GPSPosition -GPSAltitude \
+              -CreateDate -DateTimeOriginal -Make -Model \
+              "_scan/imgs/${sha}" >> exif_report.txt || true
+            echo "" >> exif_report.txt
+          done < image_blobs.txt
+
+      - name: Build image index (CSV)
+        run: |
+          echo "blob_sha,path" > images_in_history.csv
+          awk '{print $1 "," $2}' image_blobs.txt >> images_in_history.csv || true
+
+      - name: Search text across ALL revisions (emails/phones/addresses)
+        run: |
+          : > secrets_report.txt
+          # Define patterns (add your own terms between the quotes)
+          EMAIL_REGEX='[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+          PHONE_REGEX='(\+?1[\s.-]?)?\(?[2-9][0-9]{2}\)?[\s.-]?[0-9]{3}[\s.-]?[0-9]{4}'
+          # Replace these with your own specifics for higher precision:
+          NAME1='Barrington'
+          NAME2='zd-ctrl'
+          NAME3='infopolising@gmail.com'
+          NAME4='647-641-3782'
+
+          # Search all tracked history
+          COMMITS=$(git rev-list --all)
+
+          # Emails
+          git grep -I -n -E "$EMAIL_REGEX" $COMMITS > emails.txt || true
+          # Phones
+          git grep -I -n -E "$PHONE_REGEX" $COMMITS > phones.txt || true
+          # Custom terms
+          git grep -I -n -E "$NAME1|$NAME2|$NAME3|$NAME4" $COMMITS > custom.txt || true
+
+          echo "=== EMAIL HITS ===" >> secrets_report.txt
+          cat emails.txt >> secrets_report.txt || true
+          echo -e "\n=== PHONE HITS ===" >> secrets_report.txt
+          cat phones.txt >> secrets_report.txt || true
+          echo -e "\n=== CUSTOM TERM HITS ===" >> secrets_report.txt
+          cat custom.txt >> secrets_report.txt || true
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-reports
+          path: |
+            exif_report.txt
+            images_in_history.csv
+            secrets_report.txt
+          compression-level: 0
