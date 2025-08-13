@@ -22,16 +22,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install deps
+      - run: corepack enable            # enables Yarn
+      - name: Install deps (Yarn)
         working-directory: frontend
-        run: npm ci
-      - name: Build
+        run: yarn install --frozen-lockfile
+      - name: Build (Yarn)
         working-directory: frontend
-        run: npm run build
-      - name: Upload artifact
+        run: yarn build                 # CRA/CRACO builds to "build"
+      - name: Upload artifact to Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend/dist   # if your build outputs to "build", change to frontend/build
+          path: frontend/build          # <-- this is the built site
 
   deploy:
     needs: build
