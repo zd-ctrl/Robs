@@ -1,0 +1,22 @@
+name: Create Repo Bundle
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Create bundle
+        run: git bundle create repo-bundle.zip --all
+
+      - name: Upload bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: repo-bundle
+          path: repo-bundle.zip
