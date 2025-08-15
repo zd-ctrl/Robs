@@ -1,22 +1,29 @@
-name: Create Repo Bundle
+name: Make full repo bundle
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}   # run manually from Actions
 
 jobs:
-  create-bundle:
+  bundle:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout full history
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0      # IMPORTANT: include ALL history
 
-      - name: Create bundle
-        run: git bundle create repo-bundle.zip --all
+      - name: Ensure repo isn't shallow (fallback)
+        run: |
+          if git rev-parse --is-shallow-repository | grep -q true; then
+            git fetch --unshallow --tags
+          fi
+
+      - name: Create git bundle (all branches & tags)
+        run: git bundle create repo.bundle --all
 
       - name: Upload bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: repo-bundle
-          path: repo-bundle.zip
+          path: repo.bundle
+          compression-level: 0
