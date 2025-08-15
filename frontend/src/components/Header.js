@@ -55,17 +55,17 @@ const Header = () => {
         isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-md'
       }`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3">
+          <div className="flex items-center justify-between h-24">
+            {/* Logo - Made bigger */}
+            <Link to="/" className="flex items-center space-x-4">
               <img 
                 src="https://customer-assets.emergentagent.com/job_8e4b8657-9f00-4d13-8490-6fcb3b912fb2/artifacts/kpuy590c_Rob%27s%20Logo.png" 
                 alt="Dragon Concrete & Polishing Logo" 
-                className="h-14 w-auto"
+                className="h-20 w-auto"
               />
               <div className="flex flex-col">
-                <h1 className="text-xl font-bold text-blue-900">Dragon Concrete</h1>
-                <span className="text-sm text-blue-600">& Polishing</span>
+                <h1 className="text-2xl font-bold text-blue-900">Dragon Concrete</h1>
+                <span className="text-lg text-blue-600">& Polishing</span>
               </div>
             </Link>
 
