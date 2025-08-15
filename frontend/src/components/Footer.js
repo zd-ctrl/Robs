@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -23,11 +23,6 @@ const Footer = () => {
             <p className="text-gray-300 mb-4">
               Leading provider of concrete flooring solutions in Ontario, delivering the highest quality finished concrete floors.
             </p>
-            <div className="flex space-x-4">
-              <Facebook className="h-5 w-5 text-blue-400 hover:text-blue-300 cursor-pointer transition-colors" />
-              <Instagram className="h-5 w-5 text-blue-400 hover:text-blue-300 cursor-pointer transition-colors" />
-              <Linkedin className="h-5 w-5 text-blue-400 hover:text-blue-300 cursor-pointer transition-colors" />
-            </div>
           </div>
 
           {/* Services */}

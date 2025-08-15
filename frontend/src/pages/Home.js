@@ -41,12 +41,26 @@ const Home = () => {
           className="absolute inset-0 opacity-10"
           style={{
             transform: `translateY(${scrollY * 0.5}px)`,
-            backgroundImage: 'url(https://customer-assets.emergentagent.com/job_8e4b8657-9f00-4d13-8490-6fcb3b912fb2/artifacts/92mfjt5o_abt_img1.webp)',
+            backgroundImage: 'url(https://customer-assets.emergentagent.com/job_polished-floors/artifacts/329go5ws_abt_img1%20%281%29.webp)',
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
         />
-        <div className="container mx-auto px-4 z-10">
+        
+        {/* Logo Banner - White background spanning full width above the text */}
+        <div className="absolute top-0 left-0 right-0 bg-white/95 backdrop-blur-sm py-8 z-10">
+          <div className="container mx-auto px-4 text-center">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_8e4b8657-9f00-4d13-8490-6fcb3b912fb2/artifacts/kpuy590c_Rob%27s%20Logo.png" 
+              alt="Dragon Concrete & Polishing Logo" 
+              className="h-32 w-auto mx-auto mb-4"
+            />
+            <h2 className="text-3xl font-bold text-blue-900">Dragon Concrete & Polishing</h2>
+            <p className="text-lg text-blue-600 mt-2">Premium Concrete Solutions for Ontario</p>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 z-10 pt-48">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white">
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -91,8 +105,26 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Before & After Section */}
       <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16 scroll-reveal">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">See the Transformation</h2>
+            <p className="text-xl text-gray-600">Witness the dramatic difference our concrete polishing makes</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto scroll-reveal">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_polished-floors/artifacts/fffd59g9_Concrete-floor-stain-polish-before-after.jpg"
+              alt="Before and After Concrete Polishing"
+              className="w-full rounded-2xl shadow-2xl"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -112,7 +144,7 @@ const Home = () => {
       </section>
 
       {/* Services Preview */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Expert Services</h2>
@@ -123,7 +155,7 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {mockData.services.slice(0, 6).map((service, index) => (
-              <div key={service.id} className="bg-white rounded-xl shadow-lg hover-lift scroll-reveal p-6">
+              <div key={service.id} className="bg-white rounded-xl shadow-lg hover-lift scroll-reveal p-6 border border-gray-100">
                 <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg mb-6 overflow-hidden">
                   <img 
                     src={service.image} 
@@ -157,7 +189,7 @@ const Home = () => {
       </section>
 
       {/* Featured Gallery */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 scroll-reveal">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Work Speaks</h2>
