@@ -1,7 +1,7 @@
 name: Make full repo bundle
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch: {}    # run manually from the Actions tab
 
 jobs:
   bundle:
@@ -10,7 +10,7 @@ jobs:
       - name: Checkout full history
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # IMPORTANT: get all history
+          fetch-depth: 0     # IMPORTANT: include ALL history
 
       - name: Create git bundle
         run: git bundle create repo.bundle --all
