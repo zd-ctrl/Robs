@@ -1,11 +1,11 @@
 const mockData = {
-  // Services data
+  // Services data - All with unique polished concrete images
   services: [
     {
       id: 'concrete-polishing',
       name: 'Concrete Polishing',
       description: 'Transform dull concrete into a brilliant, mirror-like surface that reflects light beautifully.',
-      image: 'https://images.pexels.com/photos/6446308/pexels-photo-6446308.jpeg',
+      image: 'https://images.unsplash.com/photo-1515895309288-a3815ab7cf81',
       category: 'both',
       details: 'Our concrete polishing process uses diamond grinding tools to create a smooth, glossy finish that enhances both durability and aesthetics. Perfect for warehouses, showrooms, retail spaces, and modern homes.',
       benefits: ['Increased light reflection', 'Easy maintenance', 'Long-lasting finish', 'Cost-effective solution']
@@ -14,7 +14,7 @@ const mockData = {
       id: 'epoxy-flooring',
       name: 'Epoxy Floor Coatings',
       description: 'Durable, chemical-resistant epoxy coatings perfect for industrial and commercial applications.',
-      image: 'https://images.unsplash.com/photo-1570992532407-b71ca75b801e',
+      image: 'https://images.unsplash.com/photo-1595424073665-bf04f38d9c0b',
       category: 'commercial',
       details: 'High-performance epoxy systems that provide superior protection against chemicals, abrasion, and heavy traffic. Available in various colors and finishes.',
       benefits: ['Chemical resistance', 'Non-slip options available', 'Easy to clean', 'Seamless finish']
@@ -23,7 +23,7 @@ const mockData = {
       id: 'decorative-concrete',
       name: 'Decorative Concrete',
       description: 'Stunning decorative options including staining, stamping, and artistic finishes.',
-      image: 'https://images.unsplash.com/photo-1631912423639-13b9cff4b812',
+      image: 'https://images.unsplash.com/photo-1671775281678-a44894dc7d8c',
       category: 'residential',
       details: 'Create unique, artistic concrete surfaces with our decorative techniques. From acid staining to stamped patterns, we bring your vision to life.',
       benefits: ['Custom designs', 'Wide color selection', 'Unique patterns', 'Artistic appeal']
@@ -32,7 +32,7 @@ const mockData = {
       id: 'concrete-sealing',
       name: 'Concrete Sealing',
       description: 'Protective sealers that enhance durability and maintain the beauty of your concrete.',
-      image: 'https://images.unsplash.com/photo-1631563642459-ae1b71341a5f',
+      image: 'https://images.unsplash.com/photo-1521459467264-802e2ef3141f',
       category: 'both',
       details: 'Professional-grade sealers that protect against moisture, stains, and wear while maintaining the natural beauty of concrete.',
       benefits: ['Moisture protection', 'Stain resistance', 'Enhanced durability', 'UV protection']
@@ -41,7 +41,7 @@ const mockData = {
       id: 'floor-restoration',
       name: 'Floor Restoration',
       description: 'Bring old, damaged concrete floors back to life with our restoration services.',
-      image: 'https://images.pexels.com/photos/4827509/pexels-photo-4827509.jpeg',
+      image: 'https://images.unsplash.com/photo-1617713965103-9fda56c89fad',
       category: 'both',
       details: 'Complete restoration services for damaged, stained, or worn concrete floors. We repair, refinish, and restore to like-new condition.',
       benefits: ['Cost-effective renewal', 'Structural repairs', 'Surface refinishing', 'Extended floor life']
@@ -50,7 +50,7 @@ const mockData = {
       id: 'warehouse-flooring',
       name: 'Warehouse Flooring',
       description: 'Heavy-duty flooring solutions designed for industrial and warehouse environments.',
-      image: 'https://images.unsplash.com/photo-1560780552-ba54683cb263',
+      image: 'https://images.pexels.com/photos/2117937/pexels-photo-2117937.jpeg',
       category: 'commercial',
       details: 'Industrial-strength flooring systems that withstand heavy machinery, forklift traffic, and demanding warehouse conditions.',
       benefits: ['Heavy-duty durability', 'Low maintenance', 'Dust reduction', 'Improved safety']
@@ -113,10 +113,10 @@ const mockData = {
     }
   ],
 
-  // Gallery images
+  // Gallery images - All unique polished concrete images
   gallery: [
     {
-      url: 'https://customer-assets.emergentagent.com/job_8e4b8657-9f00-4d13-8490-6fcb3b912fb2/artifacts/92mfjt5o_abt_img1.webp',
+      url: 'https://customer-assets.emergentagent.com/job_polished-floors/artifacts/329go5ws_abt_img1%20%281%29.webp',
       title: 'Polished Concrete Showroom',
       location: 'Toronto, ON',
       category: 'commercial'
@@ -134,44 +134,44 @@ const mockData = {
       category: 'industrial'
     },
     {
-      url: 'https://images.pexels.com/photos/6446308/pexels-photo-6446308.jpeg',
-      title: 'Restaurant Flooring',
+      url: 'https://images.pexels.com/photos/247719/pexels-photo-247719.jpeg',
+      title: 'Polished Concrete Surface',
       location: 'Ottawa, ON',
       category: 'commercial'
     },
     {
-      url: 'https://images.unsplash.com/photo-1570992532407-b71ca75b801e',
-      title: 'Modern Office Space',
+      url: 'https://images.pexels.com/photos/3616764/pexels-photo-3616764.jpeg',
+      title: 'Concrete Texture Finish',
       location: 'London, ON',
       category: 'commercial'
     },
     {
-      url: 'https://images.unsplash.com/photo-1631912423639-13b9cff4b812',
-      title: 'Residential Basement',
+      url: 'https://images.pexels.com/photos/6474343/pexels-photo-6474343.jpeg',
+      title: 'Industrial Concrete Floor',
       location: 'Kitchener, ON',
-      category: 'residential'
+      category: 'industrial'
     },
     {
-      url: 'https://images.unsplash.com/photo-1631563642459-ae1b71341a5f',
-      title: 'Contemporary Living Space',
+      url: 'https://images.pexels.com/photos/6474129/pexels-photo-6474129.jpeg',
+      title: 'Polished Floor Process',
       location: 'Windsor, ON',
       category: 'residential'
     },
     {
-      url: 'https://images.pexels.com/photos/4827509/pexels-photo-4827509.jpeg',
-      title: 'Corporate Headquarters',
+      url: 'https://images.unsplash.com/photo-1633319985833-a933819c9974',
+      title: 'Textured Concrete Floor',
       location: 'Markham, ON',
       category: 'commercial'
     },
     {
-      url: 'https://images.unsplash.com/photo-1560780552-ba54683cb263',
-      title: 'Warehouse Flooring',
+      url: 'https://images.unsplash.com/photo-1633319987184-55abe254437e',
+      title: 'Smooth Concrete Surface',
       location: 'Brampton, ON',
       category: 'industrial'
     },
     {
-      url: 'https://images.unsplash.com/photo-1541140134513-85a161dc4a00',
-      title: 'Luxury Retail Store',
+      url: 'https://images.unsplash.com/photo-1617967397910-f52bebe67e72',
+      title: 'Professional Concrete Finish',
       location: 'Burlington, ON',
       category: 'commercial'
     }

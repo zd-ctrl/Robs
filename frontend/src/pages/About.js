@@ -45,7 +45,7 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
             <div className="scroll-reveal">
               <img 
-                src="https://customer-assets.emergentagent.com/job_8e4b8657-9f00-4d13-8490-6fcb3b912fb2/artifacts/92mfjt5o_abt_img1.webp" 
+                src="https://customer-assets.emergentagent.com/job_polished-floors/artifacts/329go5ws_abt_img1%20%281%29.webp" 
                 alt="Dragon Concrete Polished Floor"
                 className="rounded-2xl shadow-2xl w-full"
               />

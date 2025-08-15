@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Phone, Mail, MapPin, Clock, CheckCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, CheckCircle } from 'lucide-react';
 
 const Contact = () => {
   useEffect(() => {
@@ -28,14 +28,14 @@ const Contact = () => {
       icon: Phone,
       title: 'Call Us',
       details: '647-641-3782',
-      description: 'Available 24/7 for emergencies',
+      description: 'Available for all inquiries',
       action: 'tel:647-641-3782'
     },
     {
       icon: Mail,
       title: 'Email Us',
       details: 'infopolising@gmail.com',
-      description: 'We respond within 24 hours',
+      description: 'Send us your questions',
       action: 'mailto:infopolising@gmail.com'
     },
     {
@@ -45,13 +45,6 @@ const Contact = () => {
       description: 'Downtown Toronto, ON',
       action: 'https://maps.google.com/?q=195+Barrington+Avenue+Toronto'
     }
-  ];
-
-  const businessHours = [
-    { day: 'Monday - Friday', hours: '7:00 AM - 7:00 PM' },
-    { day: 'Saturday', hours: '8:00 AM - 6:00 PM' },
-    { day: 'Sunday', hours: '9:00 AM - 5:00 PM' },
-    { day: 'Emergency Service', hours: '24/7 Available' }
   ];
 
   const serviceAreas = [
@@ -100,57 +93,30 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Business Hours & Service Areas */}
+      {/* Service Areas */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Business Hours */}
-            <div className="scroll-reveal">
-              <div className="bg-white rounded-xl shadow-lg p-8">
-                <div className="flex items-center mb-6">
-                  <Clock className="h-8 w-8 text-blue-600 mr-3" />
-                  <h2 className="text-2xl font-bold text-gray-900">Business Hours</h2>
-                </div>
-                <div className="space-y-4">
-                  {businessHours.map((schedule, index) => (
-                    <div key={index} className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="font-medium text-gray-700">{schedule.day}</span>
-                      <span className="text-blue-600 font-semibold">{schedule.hours}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                  <p className="text-blue-800 font-medium">
-                    <CheckCircle className="h-5 w-5 inline mr-2" />
-                    Emergency concrete repairs available 24/7
-                  </p>
-                </div>
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-xl shadow-lg p-8 scroll-reveal">
+              <div className="flex items-center mb-6">
+                <MapPin className="h-8 w-8 text-blue-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Service Areas</h2>
               </div>
-            </div>
-
-            {/* Service Areas */}
-            <div className="scroll-reveal">
-              <div className="bg-white rounded-xl shadow-lg p-8">
-                <div className="flex items-center mb-6">
-                  <MapPin className="h-8 w-8 text-blue-600 mr-3" />
-                  <h2 className="text-2xl font-bold text-gray-900">Service Areas</h2>
-                </div>
-                <p className="text-gray-600 mb-6">
-                  We proudly serve clients throughout Ontario, from Downtown Toronto to all major cities and surrounding areas.
+              <p className="text-gray-600 mb-6">
+                We proudly serve clients throughout Ontario, from Downtown Toronto to all major cities and surrounding areas.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {serviceAreas.map((area, index) => (
+                  <div key={index} className="flex items-center">
+                    <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                    <span className="text-gray-700">{area}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 bg-green-50 rounded-lg">
+                <p className="text-green-800 font-medium">
+                  Don't see your area listed? Contact us - we may be able to serve your location!
                 </p>
-                <div className="grid grid-cols-2 gap-3">
-                  {serviceAreas.map((area, index) => (
-                    <div key={index} className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                      <span className="text-gray-700">{area}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-6 p-4 bg-green-50 rounded-lg">
-                  <p className="text-green-800 font-medium">
-                    Don't see your area listed? Contact us - we may be able to serve your location!
-                  </p>
-                </div>
               </div>
             </div>
           </div>
