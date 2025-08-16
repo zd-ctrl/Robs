@@ -1,10 +1,10 @@
-name: Purge selected terms + remove any .env files (HEAD + history) and verify
+name: 🚨 PURGE & VERIFY (history + head)
 
 on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write   # needed to push rewritten history
+  contents: write
 
 jobs:
   purge-and-verify:
@@ -14,22 +14,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Ensure repo isn't shallow (fallback)
         run: |
           if git rev-parse --is-shallow-repository | grep -q true; then
             git fetch --unshallow --tags
           fi
-
       - name: Install tools
         run: |
           python3 -m pip install --user git-filter-repo
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           sudo apt-get update
           sudo apt-get install -y ripgrep
-
-      # --- Replacement rules (KEEP: 647, Barrington, Mississauga, infopolising) ---
-      # --- REMOVE: Manny, L5V, 1442, 1015 ---
       - name: Create replacement rules
         run: |
           cat > replacements.txt << 'EOF'
@@ -38,11 +33,6 @@ regex:(?i)\bL5V\b==>[REDACTED]
 regex:\b1442\b==>[REDACTED]
 regex:\b1015\b==>[REDACTED]
 EOF
-          echo "Replacement rules:"
-          cat replacements.txt
-
-      # --- Create a list of paths to drop from ALL history ---
-      #     We include broad globs to catch any .env variants anywhere.
       - name: Create paths-to-remove list
         run: |
           cat > paths-to-remove.txt << 'EOF'
@@ -54,18 +44,12 @@ EOF
 *.env.*
 **/*.env.*
 EOF
-          echo "Paths to remove:"
-          cat paths-to-remove.txt
-
-      # --- Rewrite history: replace sensitive text and drop .env* files everywhere ---
       - name: Rewrite history (git-filter-repo)
         run: |
-          # Use --paths-from-file to drop any .env-like files by glob
           git filter-repo --force \
             --replace-text replacements.txt \
             --paths-from-file paths-to-remove.txt \
             --invert-paths
-
       - name: GC and force-push
         run: |
           git reflog expire --expire=now --all
@@ -74,66 +58,32 @@ EOF
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git push origin "$BRANCH" --force
-
-      # ---------- VERIFY (HEAD + history) ----------
-      # 1) Working tree (HEAD): no .env files & no removed terms
-      - name: Verify HEAD (working tree)
-        id: verify_head
+      - name: Verify HEAD + history
+        id: verify
         run: |
-          : > verify_head.txt
-          echo "=== Verify HEAD: .env files ===" | tee -a verify_head.txt
-          if rg -INno --pcre2 '(?:^|/)\.env(?:$|[.\w-])' --hidden --glob '!.git' . | tee -a verify_head.txt; then
-            echo "head_env=1" >> $GITHUB_OUTPUT
-          else
-            echo "None" | tee -a verify_head.txt
-            echo "head_env=0" >> $GITHUB_OUTPUT
-          fi
-
-          echo -e "\n=== Verify HEAD: removed terms ===" | tee -a verify_head.txt
-          FAIL=0
-          for PATTERN in \
-            '(?i)Manny' \
-            '(?i)\bL5V\b' \
-            '\b1442\b' \
-            '\b1015\b'
-          do
-            echo -e "\n-- $PATTERN --" | tee -a verify_head.txt
-            if rg -INno --pcre2 "$PATTERN" --hidden --glob '!.git' . | tee -a verify_head.txt; then
-              FAIL=1
-            else
-              echo "None" | tee -a verify_head.txt
-            fi
+          : > verify_report.txt
+          echo "=== Verify HEAD: .env files ===" | tee -a verify_report.txt
+          head_env=0
+          if rg -INno --pcre2 '(?:^|/)\.env(?:$|[.\w-])' --hidden --glob '!.git' . | tee -a verify_report.txt; then head_env=1; fi
+          echo -e "\n=== Verify HEAD: removed terms ===" | tee -a verify_report.txt
+          head_terms=0
+          for P in '(?i)Manny' '(?i)\bL5V\b' '\b1442\b' '\b1015\b'; do
+            echo -e "\n-- $P --" | tee -a verify_report.txt
+            if rg -INno --pcre2 "$P" --hidden --glob '!.git' . | tee -a verify_report.txt; then head_terms=1; fi
           done
-          echo "head_terms=$FAIL" >> $GITHUB_OUTPUT
-
-      # 2) Full history: ensure no .env-like file paths remain in any commit
-      - name: Verify HISTORY (.env paths)
-        id: verify_hist
-        run: |
-          : > verify_history_env.txt
-          echo "=== Verify HISTORY: .env-like paths across all commits ===" | tee -a verify_history_env.txt
-          FAIL=0
-          # List all objects+paths ever and grep for .env patterns
-          if git rev-list --objects --all \
-            | grep -Ei '(^|/)\.env($|[.\w-])' \
-            | tee -a verify_history_env.txt; then
-            FAIL=1
-          else
-            echo "None" | tee -a verify_history_env.txt
-          fi
-          echo "hist_env=$FAIL" >> $GITHUB_OUTPUT
-
-      - name: Upload verification reports
+          echo -e "\n=== Verify HISTORY: .env-like paths ===" | tee -a verify_report.txt
+          hist_env=0
+          if git rev-list --objects --all | grep -Ei '(^|/)\.env($|[.\w-])' | tee -a verify_report.txt; then hist_env=1; fi
+          echo "head_env=$head_env" >> $GITHUB_OUTPUT
+          echo "head_terms=$head_terms" >> $GITHUB_OUTPUT
+          echo "hist_env=$hist_env" >> $GITHUB_OUTPUT
+      - name: Upload verification report
         uses: actions/upload-artifact@v4
         with:
-          name: cleanup-verification
-          path: |
-            verify_head.txt
-            verify_history_env.txt
-          compression-level: 0
-
+          name: cleanup-verify-report
+          path: verify_report.txt
       - name: Fail if anything remains
-        if: steps.verify_head.outputs.head_env == '1' || steps.verify_head.outputs.head_terms == '1' || steps.verify_hist.outputs.hist_env == '1'
+        if: steps.verify.outputs.head_env == '1' || steps.verify.outputs.head_terms == '1' || steps.verify.outputs.hist_env == '1'
         run: |
-          echo "❌ Cleanup verification failed. See 'cleanup-verification' artifact for details."
+          echo "❌ Cleanup verification failed. See 'cleanup-verify-report' artifact."
           exit 1
