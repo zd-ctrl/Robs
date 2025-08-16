@@ -1,4 +1,4 @@
-name: 🚨 PURGE & VERIFY (history + head)
+name: "🚨 PURGE & VERIFY (history + head)"
 
 on:
   workflow_dispatch: {}
